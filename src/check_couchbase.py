@@ -28,9 +28,16 @@ def get_status(required_status):
 			status = int(splitter.split(status).pop(-2))
 			return status
 
-def check_levels(message, status_value):
-	# convert to mb
-	status_value_mb = status_value/(1024.0**2)
+def check_levels(message, status_value, max_value = None):
+    # convert to mb
+    status_value_mb = status_value / (1024.0**2)
+    if max_value is not None:
+        if (100 < options.critical > 0) or ( 100 < options.warning > 0):
+            print("-W, -C should be between 0 .. 100, for this option")
+            sys.exit(nagios_codes['CRITICAL'])
+
+        status_value = 100 * float(status_value)/float(max_value)
+
 	if status_value >= options.critical:
 		print "CRITICAL - " + message, status_value_mb
 		return sys.exit(nagios_codes['CRITICAL'])
