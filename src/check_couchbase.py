@@ -30,13 +30,13 @@ def get_status(required_status):
 
 def check_levels(message, status_value, max_value = None):
     # convert to mb
-    status_value_mb = status_value / (1024.0**2)
-    if max_value is not None:
-        if (100 < options.critical > 0) or ( 100 < options.warning > 0):
-            print("-W, -C should be between 0 .. 100, for this option")
-            sys.exit(nagios_codes['CRITICAL'])
+    	status_value_mb = status_value / (1024.0**2)
+    	if max_value is not None:
+        	if (100 < options.critical > 0) or ( 100 < options.warning > 0):
+            		print("-W, -C should be between 0 .. 100, for this option")
+            		sys.exit(nagios_codes['CRITICAL'])
 
-        status_value = 100 * float(status_value)/float(max_value)
+        	status_value = 100 * float(status_value)/float(max_value)
 
 	if status_value >= options.critical:
 		print "CRITICAL - " + message, status_value_mb
@@ -106,7 +106,8 @@ def check_ops_per_second():
 	
 def check_mem_used():
 	mem_used = get_status(193)
-	check_levels("CB memory used: ", mem_used)
+	max_mem = get_status(104)
+	check_levels("CB memory used: ", mem_used, max_mem)
 
 def check_cas_per_second():
 	cas_hits = get_status(10)
